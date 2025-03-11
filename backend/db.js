@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv')
 dotenv.config();
 
-mongoose.connect(process.env.DATABASE_URL)
+mongoose.connect('mongodb://localhost:27017/mydb')
     .then(() => {
         console.log('Connected to MongoDB');
     })

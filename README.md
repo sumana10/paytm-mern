@@ -1,4 +1,6 @@
-To set up the Paytm MERN project from the GitHub repository you mentioned, follow these detailed steps:
+## Paytm MERN Project Setup Guide
+
+Follow these steps to set up the Paytm MERN project from the GitHub repository:
 
 ### 1. Clone the Repository
 
@@ -20,12 +22,18 @@ cd paytm-mern
    MONGODB_URL=your_mongodb_url_here
    ```
 
-3. **Install Dependencies:**
+3. **Set Up MongoDB with Docker:**
+   ```bash
+   docker build ./ -t mongodb:4.7-replset
+   docker run --name mongodb-replset -p 27017:27017 -d mongodb:4.7-replset
+   ```
+
+4. **Install Dependencies:**
    ```bash
    npm install
    ```
 
-4. **Start the Backend Server:**
+5. **Start the Backend Server:**
    ```bash
    npm start
    ```
@@ -51,9 +59,8 @@ cd paytm-mern
 
 1. **Import Postman Collection:**
    - Open Postman.
-   - Click on "Import" and select the `Paytm.postman_collection.json` file from the `backend` directory (if it’s available) or ask for it if it’s not included.
+   - Click on "Import" and select the `Paytm.postman_collection.json` file from the `backend` directory (if available) or request it if missing.
 
 2. **Run the Tests:**
-   - Execute the requests in the Postman collection to test your backend.
-
+   - Execute the requests in the Postman collection to verify backend functionality.
 
