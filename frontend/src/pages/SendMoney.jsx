@@ -15,8 +15,8 @@ export const SendMoney = () => {
 
         try {
             await axios.post(`${BACKEND_URL}/api/v1/account/transfer`, {
-                to: id,
-                amount
+                to: Number(id),
+                amount: Number(amount)
             }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
