@@ -15,5 +15,6 @@ validator = { version = "0.16.0", features = ["derive"] }
 env_logger = "0.10.0"
 futures-util = "0.3.28"
 chrono = { version = "0.4.24", features = ["serde"] }
+actix-cors = "0.7.1"
 
 

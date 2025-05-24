@@ -12,7 +12,7 @@ use crate::middleware::Auth;
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("/api/users")
+        web::scope("/api/v1/user")
             // Public routes
             .route("/signup", web::post().to(signup))
             .route("/signin", web::post().to(signin))
@@ -246,7 +246,6 @@ async fn get_users_bulk(
                     let id: i32 = row.get("id");
                     UserResponse {
                         id,
-                        _id: id,
                         username: row.get("username"),
                         first_name: row.get("first_name"),
                         last_name: row.get("last_name"),

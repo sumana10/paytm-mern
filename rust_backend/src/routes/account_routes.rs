@@ -8,7 +8,7 @@ use crate::middleware::Auth;
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("/api/accounts")
+        web::scope("/api/v1/account")
             .wrap(Auth)
             .route("/balance", web::get().to(get_balance))
             .route("/transfer", web::post().to(transfer))

@@ -9,6 +9,7 @@ use sqlx::{postgres::PgPoolOptions, Row};
 use std::env;
 use crate::config::AppConfig;
 use crate::routes::{user_routes, account_routes};
+use actix_cors::Cors;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -112,14 +113,25 @@ async fn main() -> std::io::Result<()> {
     
     HttpServer::new(move || {
         App::new()
+            .wrap(
+                actix_cors::Cors::default()
+                    .allowed_origin("http://localhost:5173") // your frontend URL
+                    .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+                    .allowed_headers(vec![
+                        actix_web::http::header::CONTENT_TYPE,
+                        actix_web::http::header::AUTHORIZATION,
+                    ])
+                    .max_age(3600),
+            )
             .app_data(app_config.clone())
-            .route("/health", web::get().to(|| async { 
+            .route("/health", web::get().to(|| async {
                 println!("Health check called");
-                HttpResponse::Ok().body("Server is running") 
+                HttpResponse::Ok().body("Server is running")
             }))
             .configure(user_routes::configure)
             .configure(account_routes::configure)
     })
+    
     .bind("127.0.0.1:8080")?
     .run()
     .await

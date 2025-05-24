@@ -15,11 +15,13 @@ pub struct User {
 
 #[derive(Debug, Serialize)]
 pub struct UserResponse {
+    #[serde(rename = "_id")]
     pub id: i32,
     pub username: String,
+    #[serde(rename = "firstName")]
     pub first_name: String,
+    #[serde(rename = "lastName")]
     pub last_name: String,
-    pub(crate) _id: i32,
 }
 
 impl From<User> for UserResponse {
@@ -29,7 +31,6 @@ impl From<User> for UserResponse {
             username: user.username,
             first_name: user.first_name,
             last_name: user.last_name,
-            _id: user.id,
         }
     }
 }
@@ -39,7 +40,9 @@ pub struct SignupRequest {
     #[validate(email)]
     pub username: String,
     pub password: String,
+    #[serde(alias = "firstName")]
     pub first_name: String,
+    #[serde(alias = "lastName")]
     pub last_name: String,
 }
 
