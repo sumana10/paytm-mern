@@ -4,23 +4,52 @@ use validator::Validate;
 use crate::config::AppConfig;
 use crate::models::account::{BalanceResponse, TransferRequest, TransferResponse};
 use crate::models::user::MessageResponse;
-use crate::middleware::auth::Auth;
+use crate::middleware::Auth;
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("/api")
+        web::scope("/api/accounts")
             .wrap(Auth)
             .route("/balance", web::get().to(get_balance))
             .route("/transfer", web::post().to(transfer))
     );
 }
 
+// async fn get_balance(
+//     app_config: web::Data<AppConfig>,
+// ) -> impl Responder {
+//     HttpResponse::Ok().json(BalanceResponse { 
+//         balance: 1000.0 
+//     })
+// }
+
+// Get account balance
 async fn get_balance(
     app_config: web::Data<AppConfig>,
+    user_id: web::ReqData<i32>,
 ) -> impl Responder {
-    HttpResponse::Ok().json(BalanceResponse { 
-        balance: 1000.0 
-    })
+    println!("Balance endpoint called for user_id: {:?}", user_id);
+    
+    let account = sqlx::query("SELECT balance FROM accounts WHERE user_id = $1")
+        .bind(*user_id)
+        .fetch_optional(&app_config.db_pool)
+        .await;
+
+    match account {
+        Ok(Some(row)) => {
+            let balance: f64 = row.get("balance");
+            HttpResponse::Ok().json(BalanceResponse { balance })
+        },
+        Ok(None) => HttpResponse::NotFound().json(MessageResponse {
+            message: "Account not found".to_string(),
+        }),
+        Err(e) => {
+            eprintln!("Database error getting balance: {:?}", e);
+            HttpResponse::InternalServerError().json(MessageResponse {
+                message: "Database error".to_string(),
+            })
+        },
+    }
 }
 
 async fn perform_transfer(

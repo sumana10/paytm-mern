@@ -8,16 +8,21 @@ use crate::models::user::{
     BulkUserResponse, Claims, MessageResponse, SigninRequest, SignupRequest, TokenResponse,
     UpdateUserRequest, UserResponse,
 };
+use crate::middleware::Auth;
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("/api")
+        web::scope("/api/users")
+            // Public routes
             .route("/signup", web::post().to(signup))
             .route("/signin", web::post().to(signin))
-            .route("/update", web::put().to(update_user))
-            .route("/bulk", web::get().to(get_users_bulk)),
+            .route("/bulk", web::get().to(get_users_bulk))
+            // Protected routes with individual middleware
+            .route("/update", web::put().to(update_user).wrap(Auth))
     );
 }
+
+
 
 async fn signup(
     app_config: web::Data<AppConfig>,
