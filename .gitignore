@@ -1,1 +1,4 @@
 .DS_Store 
+
+rust_backend/target
+rust_backend/.env

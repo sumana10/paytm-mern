@@ -14,9 +14,11 @@ export const Users = () => {
         axios.get(`${BACKEND_URL}/api/v1/user/bulk?filter=` + filter)
             .then(response => {
                 setUsers(response.data.user)
+                console.log(response.data.user);
+
             })
     }, [filter])
-
+    console.log(users);
     return <>
         <div className="font-bold mt-6 text-lg">
             Users
@@ -27,10 +29,11 @@ export const Users = () => {
             }} type="text" placeholder="Search users..." className="w-full px-2 py-1 border rounded border-slate-200"></input>
         </div>
         <div>
-            {users.map((user, index) => (
-                <User user={user} key={index} />
+            {users?.length > 0 && users.map((user, index) => (
+                <User user={user} key={user._id || index} />
             ))}
         </div>
+
     </>
 }
 

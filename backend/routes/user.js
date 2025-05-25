@@ -64,7 +64,8 @@ const signinBody = zod.object({
 })
 
 router.post("/signin", async (req, res) => {
-    const { success } = signinBody.safeParse(req.body)
+    const { success } = signinBody.safeParse(req.body);
+    console.log(req.body)
     if (!success) {
         return res.status(411).json({
             message: "Email already taken / Incorrect inputs"

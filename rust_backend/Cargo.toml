@@ -1,0 +1,20 @@
+[package]
+name = "rust_backend"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4.3.1"
+sqlx = { version = "0.7.1", features = ["runtime-tokio-rustls", "postgres", "macros"] }
+tokio = { version = "1.28.2", features = ["rt-multi-thread", "macros"] }
+serde = { version = "1.0.163", features = ["derive"] }
+jsonwebtoken = "8.3.0"
+dotenv = "0.15.0"
+rand = "0.8.5"
+validator = { version = "0.16.0", features = ["derive"] }
+env_logger = "0.10.0"
+futures-util = "0.3.28"
+chrono = { version = "0.4.24", features = ["serde"] }
+actix-cors = "0.7.1"
+
+
